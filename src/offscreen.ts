@@ -158,7 +158,7 @@ function connectSourceToRecorder(stream: MediaStream, destination: MediaStreamAu
 
 async function startCapture(streamId: string, _tabId: number, includeMicrophone = true) {
   if (mediaRecorder && mediaRecorder.state === 'recording') {
-    console.log('[LateMeet][offscreen] Capture started. Mic active:', Boolean(microphoneStream), '| MIME:', mimeType || 'default');
+    console.log('[LateMeet][offscreen] Capture started. Mic active:', Boolean(microphoneStream), '| MIME:', mediaRecorder.mimeType || 'default');
   return { microphoneActive: Boolean(microphoneStream) };
   }
 
