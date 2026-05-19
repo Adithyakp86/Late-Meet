@@ -24,12 +24,25 @@ function resolveTheme(theme: ThemeMode): "light" | "dark" {
   return theme;
 }
 
+function normalizeSettings(raw: unknown): Settings {
+  const candidate = (raw ?? {}) as Partial<Settings>;
+
+  const theme: ThemeMode =
+    candidate.theme === "light" || candidate.theme === "dark" || candidate.theme === "system"
+      ? candidate.theme
+      : DEFAULT_SETTINGS.theme;
+
+  const accent =
+    typeof candidate.accent === "string" && candidate.accent.trim().length > 0
+      ? candidate.accent
+      : DEFAULT_SETTINGS.accent;
+
+  return { theme, accent };
+}
+
 export async function getSettings(): Promise<Settings> {
   const result = await chrome.storage.local.get("settings");
-  return {
-    ...DEFAULT_SETTINGS,
-    ...(result.settings ?? {}),
-  };
+  return normalizeSettings(result.settings);
 }
 
 export function applyTheme(settings: Settings): void {
@@ -52,13 +65,12 @@ function handleStorageChange(
   changes: { [key: string]: chrome.storage.StorageChange },
   namespace: string,
 ): void {
-  if (namespace !== "local" || !changes.settings?.newValue) {
+  if (namespace !== "local" || !("settings" in changes)) {
     return;
   }
-  const settings: Settings = {
-    ...DEFAULT_SETTINGS,
-    ...changes.settings.newValue,
-  };
+
+  const settings = normalizeSettings(changes.settings?.newValue);
+
   applyTheme(settings);
 }
 

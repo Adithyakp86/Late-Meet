@@ -116,7 +116,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       dot.classList.add("active");
 
       const selectedTheme = (themeSelect?.value as Settings["theme"]) || "system";
-      const selectedAccent = dot.getAttribute("data-color") || "210, 100%, 50%";
+      const selectedAccent =
+        dot.getAttribute("data-color") || settings.accent || currentAccent || "210, 100%, 50%";
       applyThemePreview(selectedTheme, selectedAccent);
     });
   });
@@ -178,7 +179,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Save theme selections into the global config tree bundle block
       theme: (themeSelect?.value as Settings["theme"]) || "system",
-      accent: activeColorDot?.getAttribute("data-color") || "210, 100%, 50%",
+      accent:
+        activeColorDot?.getAttribute("data-color") ||
+        settings.accent ||
+        currentAccent ||
+        "210, 100%, 50%",
     };
 
     const saveData: { settings: Settings; openai_api_key?: string; elevenlabs_api_key?: string } = {

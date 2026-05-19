@@ -768,6 +768,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
     }
   } catch (err) {
     // Tab might be closed by now
+    console.log(err); // since lint is giving error
   }
 });
 

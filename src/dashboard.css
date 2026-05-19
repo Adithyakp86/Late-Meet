@@ -1,7 +1,7 @@
 /* Dashboard Styles — AI Meeting Copilot Side Panel */
 /* Premium minimalism, stark adaptive design */
 
-`@import` "https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800;900&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800;900&display=swap";
 
 /* --- THEME TOKENS --- */
 @import "./theme.css";
@@ -91,12 +91,12 @@ body::-webkit-scrollbar-thumb,
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: currentColor;
+  background: currentcolor;
 }
 
 .dash-status-dot.active {
   color: hsl(var(--accent-color));
-  background: currentColor;
+  background: currentcolor;
   animation: pulse-dot 2s infinite;
 }
 
