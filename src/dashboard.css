@@ -1,7 +1,7 @@
 /* Dashboard Styles — AI Meeting Copilot Side Panel */
 /* Premium minimalism, stark adaptive design */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800;900&display=swap");
+`@import` "https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800;900&display=swap";
 
 /* --- THEME TOKENS --- */
 @import "./theme.css";
