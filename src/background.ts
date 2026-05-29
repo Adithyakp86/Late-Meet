@@ -876,32 +876,45 @@ async function sendChatToTab(tabId: number, text: string) {
 }
 
 async function maybeWelcomeJoiners(tabId: number | undefined, joiners: string[]) {
-  if (!joiners.length || getDuration() <= MIN_MEETING_DURATION_FOR_WELCOME || !tabId) return;
+  if (!joiners.length || getDuration() <= MIN_MEETING_DURATION_FOR_WELCOME || !tabId) {
+    return;
+  }
 
   const settings = await getSettings();
-  if (!isFeatureEnabled(settings, "lateJoinerBriefing")) return;
+  if (!isFeatureEnabled(settings, "lateJoinerBriefing")) {
+    return;
+  }
 
   const normalizedSelf = normalizeParticipantName(selfParticipantName);
 
   for (const joiner of joiners) {
     const name = String(joiner || "").trim();
     const normalizedName = normalizeParticipantName(name);
+
+    // Ignore invalid/self placeholder participants
     if (
       !name ||
       normalizedName === normalizeParticipantName("You") ||
-      (normalizedSelf && normalizedName === normalizedSelf) ||
-      pendingJoinersInFlight.has(name)
+      (normalizedSelf && normalizedName === normalizedSelf)
     ) {
       continue;
     }
 
-    pendingJoinersInFlight.add(name);
+    // Prevent duplicate welcome messages for case-only variants
+    // (e.g. "Alice" vs "alice")
+    if (pendingJoinersInFlight.has(normalizedName)) {
+      continue;
+    }
+
+    pendingJoinersInFlight.add(normalizedName);
+
     try {
       const text = await generateLateJoinerMessage(name);
       await sendChatToTab(tabId, text);
-      addTimeline(`Late joiner brief sent to ${name}`);
+    } catch (err) {
+      console.error("[LateMeet] Failed to welcome joiner:", err);
     } finally {
-      pendingJoinersInFlight.delete(name);
+      pendingJoinersInFlight.delete(normalizedName);
     }
   }
 }
