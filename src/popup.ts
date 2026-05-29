@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const meetingSection = document.getElementById("meeting-section") as HTMLDivElement;
   const noMeetingSection = document.getElementById("no-meeting-section") as HTMLDivElement;
   const sessionModal = document.getElementById("session-modal") as HTMLDivElement;
+  const sessionModalError = document.getElementById(
+    "session-modal-error",
+  ) as HTMLParagraphElement | null;
 
   let lastState: State | null = null;
 
@@ -269,6 +272,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   function showSessionModal() {
     const saveBtn = document.getElementById("save-session-btn") as HTMLButtonElement | null;
     const discardBtn = document.getElementById("discard-session-btn") as HTMLButtonElement | null;
+    if (sessionModalError) {
+      sessionModalError.hidden = true;
+      sessionModalError.textContent = "";
+    }
     if (saveBtn) {
       saveBtn.disabled = false;
       saveBtn.textContent = "Save Session";
@@ -298,6 +305,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     btn.disabled = true;
     btn.textContent = "Saving...";
     btn.classList.add("loading");
+    if (sessionModalError) {
+      sessionModalError.hidden = true;
+      sessionModalError.textContent = "";
+    }
     if (discardBtn) {
       discardBtn.disabled = true;
     }
@@ -310,6 +321,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       hideSessionModal();
     } catch (err) {
       console.error("[LateMeet] Failed to save session:", err);
+      if (sessionModalError) {
+        sessionModalError.hidden = false;
+        sessionModalError.textContent =
+          err instanceof Error
+            ? err.message
+            : "Unable to save this session. Export it from the dashboard before closing Chrome.";
+      }
       // Restore states on error
       btn.disabled = false;
       btn.textContent = originalText;
