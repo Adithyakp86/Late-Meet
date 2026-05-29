@@ -1168,12 +1168,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     showToast("Downloaded as .md file", "success");
   }
 
-  // Ensure loadMeetingHistory logic is NOT dropped as requested by the review bot
-  async function loadMeetingHistory() {
-    // Falls back to loadSavedSessions to reuse the exact same history/session logic
-    return loadSavedSessions();
-  }
-
   // ——— Transcript Search Phase 2 ———
   let searchMatches: HTMLElement[] = [];
   let currentMatchIndex = -1;
@@ -1371,7 +1365,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Load sessions on tab switch
-  document.querySelector('[data-tab="sessions"]')?.addEventListener("click", loadSavedSessions);
+  document.querySelector('[data-tab="sessions"]')?.addEventListener("click", loadMeetingHistory);
   // Load history on tab switch
   document.querySelector('[data-tab="history"]')?.addEventListener("click", loadMeetingHistory);
   // Session loading is handled in the tab click listener now
