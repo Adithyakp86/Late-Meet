@@ -78,8 +78,8 @@ function installChromeMock(options: MockChromeOptions = {}) {
         },
       },
       onRemoved: { addListener: () => {} },
-      get: async (_tabId: number) => mockGetTabResult as chrome.tabs.Tab,
-      query: async () => [] as chrome.tabs.Tab[],
+      get: async (_tabId: number) => mockGetTabResult,
+      query: async () => [],
       sendMessage: async () => {},
     },
     commands: {
@@ -106,9 +106,8 @@ function installChromeMock(options: MockChromeOptions = {}) {
 installChromeMock();
 
 // Dynamically import background.ts so that chrome is already mocked when the
-// module-level statements run. We use a top-level await via a promise that
-// resolves before the individual tests execute.
-const backgroundLoaded: Promise<void> = import("./background.ts").then(() => {});
+// module-level statements run.
+await import("./background.ts");
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -126,7 +125,7 @@ function resetMessages() {
 
 /** Wait for the background module to finish loading. */
 async function ensureLoaded() {
-  await backgroundLoaded;
+  // Already loaded via top-level await
 }
 
 /**
@@ -135,7 +134,7 @@ async function ensureLoaded() {
  */
 function lastStateUpdate(): Record<string, unknown> | null {
   const updates = sentMessages.filter((m) => m.type === "STATE_UPDATE");
-  return updates.length > 0 ? (updates[updates.length - 1].state ?? null) : null;
+  return updates.at(-1)?.state ?? null;
 }
 
 // ---------------------------------------------------------------------------
@@ -411,7 +410,7 @@ test("URL parsing: hostname check correctly distinguishes real from spoofed Meet
     try {
       const parsed = new URL(url);
       if (parsed.hostname === "meet.google.com") {
-        const pathMatch = parsed.pathname.match(/^\/([a-z\-]+)/);
+        const pathMatch = /^\/([a-z-]+)/.exec(parsed.pathname);
         const candidate = pathMatch ? pathMatch[1] : null;
         if (candidate && candidate !== "new") {
           meetingId = candidate;
@@ -440,7 +439,7 @@ test("URL parsing: pathname regex extracts only the first path segment", () => {
   ];
 
   for (const { pathname, expected } of testCases) {
-    const pathMatch = pathname.match(/^\/([a-z\-]+)/);
+    const pathMatch = /^\/([a-z-]+)/.exec(pathname);
     const candidate = pathMatch ? pathMatch[1] : null;
     const meetingId = candidate && candidate !== "new" ? candidate : null;
 
