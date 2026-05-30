@@ -727,6 +727,19 @@ Before submitting, verify all boxes:
 
 ---
 
+## ⌨️ Keyboard Shortcuts
+
+Control Late Meet without touching your mouse — perfect for accessibility and power users.
+
+| Shortcut       | Mac           | Action                  |
+| :------------- | :------------ | :---------------------- |
+| `Ctrl+Shift+S` | `Cmd+Shift+S` | Toggle recording on/off |
+| `Ctrl+Shift+P` | `Cmd+Shift+P` | Open the side panel     |
+
+> Shortcuts can be customized at `chrome://extensions/shortcuts`.
+
+---
+
 ## 🔒 Security & Privacy
 
 <div align="center">
