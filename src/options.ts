@@ -178,10 +178,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function handleUnlock() {
     if (isUnlocked()) return;
-    const passphrase = passphraseInput?.value.trim();
+    const passphrase = passphraseInput?.value ?? "";
     if (!passphrase) {
       if (passphraseStatus) {
-        passphraseStatus.style.color = "#EF4444";
+        passphraseStatus.style.color = "`#EF4444`";
         passphraseStatus.textContent = "Please enter a passphrase";
       }
       return;
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     } else {
       if (passphraseStatus) {
-        passphraseStatus.style.color = "#EF4444";
+        passphraseStatus.style.color = "`#EF4444`";
         passphraseStatus.textContent = "Wrong passphrase — could not decrypt stored credentials";
       }
     }
