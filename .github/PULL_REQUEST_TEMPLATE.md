@@ -1,7 +1,7 @@
 ## Description
 Please include a summary of the change and which issue is fixed.
 
-Fixes #296
+Fixes #{issue_number}
 
 ## Type of Change
 - [ ] Bug fix (non-breaking change which fixes an issue)
