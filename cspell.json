@@ -50,7 +50,14 @@
     "bundler",
     "prebuild",
     "postbuild",
-    "precommit"
+    "precommit",
+    "emnapi",
+    "byok",
+    "fast-check",
+    "Chakraborty",
+    "gantt",
+    "glassmorphism",
+    "Supabase"
   ],
   "ignorePaths": [
     "node_modules",

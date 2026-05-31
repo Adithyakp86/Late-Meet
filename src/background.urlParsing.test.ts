@@ -76,6 +76,8 @@ function installChromeMock(options: MockChromeOptions = {}) {
       },
       getContexts: async () => [],
       onMessage: { addListener: () => {} },
+      onInstalled: { addListener: () => {} },
+      onStartup: { addListener: () => {} },
     },
     alarms: {
       onAlarm: { addListener: () => {} },
@@ -99,6 +101,11 @@ function installChromeMock(options: MockChromeOptions = {}) {
     },
     commands: {
       onCommand: { addListener: () => {} },
+    },
+    contextMenus: {
+      onClicked: { addListener: () => {} },
+      removeAll: (callback?: () => void) => callback?.(),
+      create: () => {},
     },
     sidePanel: {
       open: async () => {},
