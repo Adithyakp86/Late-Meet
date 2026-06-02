@@ -303,6 +303,11 @@ body::-webkit-scrollbar-thumb {
   border-color: var(--border-main);
 }
 
+.icon-btn:focus-visible {
+  outline: 2px solid hsl(var(--accent-color));
+  outline-offset: 2px;
+}
+
 /* ——— Duration Bar ——— */
 .duration-bar {
   display: flex;
@@ -531,6 +536,16 @@ body::-webkit-scrollbar-thumb {
 .topic-status.completed {
   color: var(--text-sub);
   background: var(--bg-card);
+}
+
+.topic-dot.unresolved {
+  background: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+}
+
+.topic-status.unresolved {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.15);
 }
 
 /* ——— Late Joiners ——— */
