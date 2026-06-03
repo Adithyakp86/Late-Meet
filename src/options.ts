@@ -19,8 +19,15 @@ interface Settings {
   transcriptRefinement?: boolean;
   theme?: "system" | "light" | "dark";
   accent?: string;
-  [key: string]: any;
 }
+
+type BooleanSettingKey =
+  | "lateJoinerBriefing"
+  | "topicDetection"
+  | "decisionDetection"
+  | "actionExtraction"
+  | "sentimentAnalysis"
+  | "transcriptRefinement";
 
 // Utility to apply style visual changes instantly to the page
 function applyThemePreview(theme: "system" | "light" | "dark", accent: string) {
@@ -89,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Feature toggles
-  const toggles = [
+  const toggles: Array<{ id: string; key: BooleanSettingKey }> = [
     { id: "late-joiner-toggle", key: "lateJoinerBriefing" },
     { id: "topic-toggle", key: "topicDetection" },
     { id: "decision-toggle", key: "decisionDetection" },
