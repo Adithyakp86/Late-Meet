@@ -632,22 +632,20 @@ git push origin feature/your-feature-name
 
 #### 🟢 Beginner — `level-1`
 
-*No open issues for this level right now! Stay tuned.*
+_No open issues for this level right now! Stay tuned._
 
 #### 🟡 Intermediate — `level-2`
 
-| # | Title | Skills |
-| :---: | :--- | :--- |
-| [#412](https://github.com/shouri123/Late-Meet/issues/412) | \[Enhancement\] Add support for Google Meet breakout room transcription | General |
+|                             #                             | Title                                                                                    | Skills  |
+| :-------------------------------------------------------: | :--------------------------------------------------------------------------------------- | :------ |
+| [#412](https://github.com/shouri123/Late-Meet/issues/412) | \[Enhancement\] Add support for Google Meet breakout room transcription                  | General |
 | [#410](https://github.com/shouri123/Late-Meet/issues/410) | \[Bug\] \`background.ts\` service worker fails to restart after Chrome updates extension | General |
-
 
 #### 🔴 Advanced — `level-3`
 
-| # | Title | Skills |
-| :---: | :--- | :--- |
+|                             #                             | Title                                                                               | Skills  |
+| :-------------------------------------------------------: | :---------------------------------------------------------------------------------- | :------ |
 | [#411](https://github.com/shouri123/Late-Meet/issues/411) | \[Performance\] \`speakerAttribution.ts\` allocates new arrays on every audio frame | General |
-
 
 </div>
 <!-- END_ISSUE_TABLES -->
