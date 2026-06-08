@@ -151,7 +151,7 @@ export interface StoredTranscriptEntry {
   speaker: string;
   text: string;
   timestamp: number; // Offset from meeting start in ms
-  confidence: number; // 0.0 to 1.0
+  confidence?: number; // 0.0 to 1.0
 }
 
 /** Root schema for chrome.storage.local */
