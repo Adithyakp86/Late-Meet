@@ -7,7 +7,12 @@ import {
 import { validateOpenAIKey, validateElevenLabsKey } from "./utils/api.js";
 import { renderStorageDashboard } from "./storageDashboard";
 
-interface Settings {
+/**
+ * Strongly-typed map of all recognized extension settings keys and their
+ * expected value types. Used to provide type safety alongside the open-ended
+ * `Settings` type that allows arbitrary extra keys.
+ */
+interface KnownSettings {
   summarizationInterval?: number;
   vadThreshold?: number;
   aiModel?: string;
@@ -19,10 +24,31 @@ interface Settings {
   transcriptRefinement?: boolean;
   theme?: "system" | "light" | "dark";
   accent?: string;
-  [key: string]: any;
 }
 
-// Utility to apply style visual changes instantly to the page
+/**
+ * The full settings object stored in chrome.storage.local. Combines all known
+ * typed settings with an open index signature that preserves any unrecognized
+ * keys written by older or future extension versions.
+ */
+type Settings = KnownSettings & Record<string, unknown>;
+
+/**
+ * A union of all `KnownSettings` keys whose value type is `boolean | undefined`.
+ * Used to constrain the feature-toggle mapping so only boolean settings can be
+ * bound to checkbox inputs.
+ */
+type BooleanSettingKey = {
+  [Key in keyof KnownSettings]-?: KnownSettings[Key] extends boolean | undefined ? Key : never;
+}[keyof KnownSettings];
+
+/**
+ * Applies theme and accent-color CSS variables to the document root immediately,
+ * giving users instant visual feedback as they interact with the theme controls.
+ * When `theme` is `"system"`, the active theme is resolved from the OS preference.
+ * @param theme - The desired theme: `"system"`, `"light"`, or `"dark"`.
+ * @param accent - A CSS HSL string (e.g. `"210, 100%, 50%"`) for the accent color.
+ */
 function applyThemePreview(theme: "system" | "light" | "dark", accent: string) {
   const root = document.documentElement;
 
@@ -113,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Feature toggles
-  const toggles = [
+  const toggles: Array<{ id: string; key: BooleanSettingKey }> = [
     { id: "late-joiner-toggle", key: "lateJoinerBriefing" },
     { id: "topic-toggle", key: "topicDetection" },
     { id: "decision-toggle", key: "decisionDetection" },
