@@ -91,11 +91,27 @@ class ApiTransactionManager {
           chrome.alarms.onAlarm.addListener((alarm) => {
             const inst = ApiTransactionManager.instance;
             if (!inst) return;
+            if (alarm.name === "atm-queue-wakeup") {
+              inst.drain();
+              return;
+            }
             const entry = inst.retryingTasks.get(alarm.name);
             if (!entry) {
               // Not our alarm — ignore.
               return;
             }
+
+            const isOffline = typeof navigator !== "undefined" && !navigator.onLine;
+            if (isOffline) {
+              if (DEBUG) {
+                console.log(
+                  `[LateMeet][Queue] Offline during alarm fire for "${entry.label}". Re-scheduling in 5s.`,
+                );
+              }
+              chrome.alarms.create(alarm.name, { when: Date.now() + 5000 });
+              return;
+            }
+
             inst.retryingTasks.delete(alarm.name);
             // Place the entry back at the front of the queue so it executes next.
             inst.queue.unshift(entry);
@@ -128,6 +144,13 @@ class ApiTransactionManager {
 
   private drain() {
     const isOffline = typeof navigator !== "undefined" && !navigator.onLine;
+    if (isOffline && this.queue.length > 0 && typeof chrome !== "undefined" && chrome.alarms) {
+      chrome.alarms.get("atm-queue-wakeup", (alarm) => {
+        if (!alarm) {
+          chrome.alarms.create("atm-queue-wakeup", { when: Date.now() + 5000 });
+        }
+      });
+    }
     if (this.processing || isOffline || this.queue.length === 0) return;
     this.processing = true;
     this.processNext();
