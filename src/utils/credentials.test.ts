@@ -14,7 +14,19 @@ import {
 type StorageArea = Record<string, unknown>;
 
 function setupChromeStorage(sessionInitial: StorageArea = {}, localInitial: StorageArea = {}) {
+  // Ensure basic mock exists so lockCredentials can run without ReferenceError
+  if (!(globalThis as any).chrome) {
+    (globalThis as any).chrome = {
+      storage: {
+        session: {
+          async remove() {},
+        },
+      },
+    };
+  }
+
   lockCredentials();
+
   const session: StorageArea = sessionInitial;
   const local: StorageArea = localInitial;
 
