@@ -14,6 +14,7 @@ import {
   StoredSession,
 } from "./sessionStorage";
 import { AudioChunkQueue, AudioChunkQueueItem } from "./audioChunkQueue";
+import { getSettings } from "./theme.js";
 import { createAudioCaptureStopPlan } from "./audioCaptureLifecycle";
 import { normalizeActiveSpeakerName, resolveTranscriptSpeaker } from "./speakerAttribution";
 import { getMeetingIdFromUrl } from "./meetingTabs";
@@ -559,10 +560,7 @@ interface Settings {
   transcriptRefinement?: boolean;
 }
 
-async function getSettings(): Promise<Settings> {
-  const result = await chrome.storage.local.get("settings");
-  return result.settings || {};
-}
+// getSettings is imported from theme.js at the top of the file
 
 function isFeatureEnabled(settings: Settings, key: keyof Settings): boolean {
   return settings[key] !== false;
