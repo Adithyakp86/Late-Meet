@@ -32,6 +32,9 @@ export function escapeHtml(value: unknown): string {
  * Prevents class injection attacks
  */
 export function sanitizeClassName(value: unknown, allowed: string[]): string {
+  if (!Array.isArray(allowed) || allowed.length === 0) {
+    throw new Error("sanitizeClassName: allowed array must not be empty");
+  }
   if (value === null || value === undefined) return allowed[0];
   let str: string;
   if (typeof value === "string") {
@@ -63,5 +66,14 @@ export function sanitizeDataAttr(value: unknown): string {
   } else {
     str = JSON.stringify(value);
   }
-  return str.replace(/['"<>&]/g, "");
+  return str.replace(/['"<>&]/g, (match) => {
+    const escapeMap: Record<string, string> = {
+      "'": "&#39;",
+      '"': "&quot;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "&": "&amp;",
+    };
+    return escapeMap[match] || match;
+  });
 }

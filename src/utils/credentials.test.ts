@@ -1,4 +1,4 @@
-import test from "node:test";
+import test, { after } from "node:test";
 import assert from "node:assert/strict";
 
 import {
@@ -247,4 +247,8 @@ test("saving partial credentials does not wipe out omitted keys", async () => {
   });
   assert.equal(local.elevenlabs_api_key, "existing-eleven");
   assert.ok((local.openai_api_key as string).startsWith("enc:"));
+});
+
+after(() => {
+  lockCredentials();
 });
