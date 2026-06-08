@@ -94,6 +94,8 @@ export interface State {
   currentSpeaker?: string | null;
   targetTabId?: number | null;
   lastSummarizedAt?: number;
+  duration?: number;
+  pendingJoiners?: string[];
   participantCount?: number;
 }
 

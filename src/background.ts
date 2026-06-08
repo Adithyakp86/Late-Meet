@@ -442,6 +442,7 @@ function snapshot() {
     currentSpeaker: state.currentSpeaker,
     participantCount: state.participantCount,
     targetTabId: state.targetTabId,
+    pendingJoiners: [...(state.pendingJoiners ?? [])],
   };
 }
 
