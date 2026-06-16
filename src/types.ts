@@ -162,6 +162,14 @@ export interface StoredTranscriptEntry {
   confidence?: number; // 0.0 to 1.0
 }
 
+export interface DayStats {
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+  audioSeconds: number;
+  estimatedCost: number;
+}
+
 /** Root schema for chrome.storage.local */
 export interface StorageSchema {
   apiKey: string | null;
@@ -169,6 +177,7 @@ export interface StorageSchema {
   sessions: MeetingSession[];
   preferences: ExtensionPreferences;
   schemaVersion: number;
+  usageStats?: Record<string, DayStats>;
 }
 
 /** User preferences for the extension */
