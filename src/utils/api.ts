@@ -206,7 +206,7 @@ export async function checkResponseStatus(
     throw new ApiError(
       "NO_CREDITS",
       provider,
-      `Your ${provider} API usage quota has been exceeded.`,
+      `${provider} API error 429: Your API usage quota has been exceeded.`,
     );
   } else {
     throw new ApiError("GENERIC", provider, `${provider} API error ${status}: ${text}`);
